@@ -420,162 +420,104 @@
     }
 }
 </style>
-
 <div class="contenedor">
-    <div class="contenedor-flex justify-between alinear-centro mb-4">
-        <h1><i class="fas fa-edit"></i> Editar Vinilo</h1>
-        <div>
-            <a href="{{ route('vinilos.show', $vinilo->id) }}" class="btn btn-outline-secundario">
-                <i class="fas fa-arrow-left"></i> Volver
-            </a>
-        </div>
+    <div class="fila" style="justify-content: space-between; align-items: center;">
+        <h1>Editar Vinilo</h1>
+        <a href="{{ route('vinilos.index') }}" class="btn btn-outline-secundario">Volver al Catálogo</a>
     </div>
-    
+
     @if(session('success'))
-        <div class="alerta alerta-exito">
+        <div style="background-color: #d4edda; color: #155724; padding: 1rem; margin-top: 1rem;">
             {{ session('success') }}
         </div>
     @endif
-    
+
     @if(session('error'))
-        <div class="alerta alerta-error">
+        <div style="background-color: #f8d7da; color: #721c24; padding: 1rem; margin-top: 1rem;">
             {{ session('error') }}
         </div>
     @endif
-    
+
     <div class="tarjeta">
         <div class="tarjeta-cuerpo">
             <form action="{{ route('vinilos.update', $vinilo->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
-                <div class="fila mb-3">
+
+                <div class="fila">
                     <div class="col-md-6">
-                        <label for="titulo" class="formulario-label">Título</label>
-                        <input type="text" class="formulario-control @error('titulo') es-invalido @enderror" 
-                               id="titulo" name="titulo" value="{{ old('titulo', $vinilo->titulo) }}" required>
-                        @error('titulo')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
+                        <label class="formulario-label" for="titulo">Título</label>
+                        <input class="formulario-control" id="titulo" name="titulo" value="{{ old('titulo', $vinilo->titulo) }}" required>
                     </div>
-                    
                     <div class="col-md-6">
-                        <label for="artista" class="formulario-label">Artista</label>
-                        <input type="text" class="formulario-control @error('artista') es-invalido @enderror" 
-                               id="artista" name="artista" value="{{ old('artista', $vinilo->artista) }}" required>
-                        @error('artista')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
+                        <label class="formulario-label" for="artista">Artista</label>
+                        <input class="formulario-control" id="artista" name="artista" value="{{ old('artista', $vinilo->artista) }}" required>
                     </div>
                 </div>
-                
-                <div class="fila mb-3">
+
+                <div class="fila">
                     <div class="col-md-6">
-                        <label for="genero" class="formulario-label">Género</label>
-                        <input type="text" class="formulario-control @error('genero') es-invalido @enderror" 
-                               id="genero" name="genero" value="{{ old('genero', $vinilo->genero) }}" required>
-                        @error('genero')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
+                        <label class="formulario-label" for="genero">Género</label>
+                        <input class="formulario-control" id="genero" name="genero" value="{{ old('genero', $vinilo->genero) }}" required>
                     </div>
-                    
                     <div class="col-md-6">
-                        <label for="anio" class="formulario-label">Año</label>
-                        <input type="number" class="formulario-control @error('anio') es-invalido @enderror" 
-                               id="anio" name="anio" value="{{ old('anio', $vinilo->anio) }}" 
-                               min="1900" max="{{ date('Y') + 1 }}" required>
-                        @error('anio')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
+                        <label class="formulario-label" for="anio">Año</label>
+                        <input type="number" class="formulario-control" id="anio" name="anio" value="{{ old('anio', $vinilo->anio) }}" min="1900" max="{{ date('Y') + 1 }}" required>
                     </div>
                 </div>
-                
-                <div class="mb-3">
-                    <label for="precio_unitario" class="formulario-label">Precio (€)</label>
-                    <div class="grupo-input">
-                        <input type="number" class="formulario-control @error('precio_unitario') es-invalido @enderror" 
-                               id="precio_unitario" name="precio_unitario" 
-                               value="{{ old('precio_unitario', $vinilo->precio_unitario) }}" 
-                               step="0.01" min="0" required>
-                        <span class="grupo-input-texto">€</span>
-                        @error('precio_unitario')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                
-                <div class="fila mb-4">
+
+                <div class="fila">
                     <div class="col-md-6">
-                        <label for="imagen" class="formulario-label">Portada del Vinilo</label>
-                        <input type="file" class="formulario-control @error('imagen') es-invalido @enderror" 
-                               id="imagen" name="imagen" accept="image/*">
-                        @error('imagen')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
-                        
-                        <div class="formulario-texto">Formatos permitidos: JPEG, PNG, JPG, GIF. Tamaño máximo: 2MB</div>
-                        
+                        <label class="formulario-label" for="precio_unitario">Precio (€)</label>
+                        <input type="number" class="formulario-control" id="precio_unitario" name="precio_unitario" value="{{ old('precio_unitario', $vinilo->precio_unitario) }}" step="0.01" min="0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="formulario-label" for="imagen">Portada del Vinilo</label>
+                        <input type="file" class="formulario-control" id="imagen" name="imagen" accept="image/*">
                         @if($vinilo->imagen)
                             <div class="mt-2">
-                                <p class="mb-1">Imagen actual:</p>
-                                <img src="{{ asset('storage/'.$vinilo->imagen) }}" alt="Portada actual" 
-                                     class="img-miniatura" style="max-height: 100px;">
+                                <p>Imagen actual:</p>
+                                <img src="{{ asset('storage/'.$vinilo->imagen) }}" alt="Portada actual" class="img-miniatura" style="max-height: 100px;">
                             </div>
                         @endif
                     </div>
-                    
+                </div>
+
+                <div class="fila">
                     <div class="col-md-6">
-                        <label for="preview_audio" class="formulario-label">Audio de Preview</label>
-                        <input type="file" class="formulario-control @error('preview_audio') es-invalido @enderror" 
-                               id="preview_audio" name="preview_audio" accept="audio/mp3,audio/wav">
-                        @error('preview_audio')
-                            <div class="feedback-invalido">{{ $message }}</div>
-                        @enderror
-                        
-                        <div class="formulario-texto">Formatos permitidos: MP3, WAV (Recomendado: archivos de menos de 5MB para mejor rendimiento)</div>
-                        
-                        <div id="audio-preview-container" class="d-none mt-3">
-                            <p class="mb-2">Previsualización del nuevo audio:</p>
+                        <label class="formulario-label">Audio de Preview</label>
+                        <div id="resumable-drop" class="btn btn-outline-secundario">Subir audio (MP3/WAV)</div>
+                        <div id="upload-progress" class="mt-2 d-none">
+                            <div>Subiendo archivo...</div>
+                            <div id="upload-bar"></div>
+                        </div>
+                        <div id="audio-preview-container" class="d-none mt-2">
+                            <p>Previsualización del nuevo audio:</p>
                             <audio id="audio-preview" controls class="w-100"></audio>
                         </div>
-                        
+<input type="hidden" name="preview_audio_path" id="preview_audio_path" value="{{ old('preview_audio_path', $vinilo->preview_audio) }}">
+
                         @if($vinilo->preview_audio)
                             <div class="mt-3">
-                                <p class="mb-2">Audio actual:</p>
-                                <div class="audio-player">
-                                    <div id="waveform-edit" class="waveform" data-audio-url="{{ asset('storage/'.$vinilo->preview_audio) }}"></div>
-                                    <div class="audio-controls">
-                                        <button id="playBtn-edit" type="button" aria-label="Reproducir/Pausar"><i class="fas fa-play"></i></button>
-                                        <button id="stopBtn-edit" type="button" aria-label="Detener"><i class="fas fa-stop"></i></button>
-                                        <div class="volume-control">
-                                            <button id="muteBtn-edit" type="button" aria-label="Silenciar"><i class="fas fa-volume-up"></i></button>
-                                            <input type="range" id="volume-edit" min="0" max="1" step="0.01" value="0.7">
-                                        </div>
-                                        <span class="audio-time">
-                                            <span id="currentTime-edit">0:00</span> / <span id="duration-edit">0:00</span>
-                                        </span>
-                                    </div>
-                                </div>
+                                <p>Audio actual:</p>
+                                <audio controls class="w-100">
+                                    <source src="{{ asset('storage/' . $vinilo->preview_audio) }}" type="audio/mpeg">
+                                    Tu navegador no soporta la reproducción de audio.
+                                </audio>
                             </div>
                         @endif
                     </div>
                 </div>
-                
-                <div class="mb-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="visible" name="visible" 
-                               value="1" {{ old('visible', $vinilo->visible ?? true) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="visible">Visible en la tienda</label>
-                    </div>
+
+                <div class="fila mt-3">
+                    <label>
+                        <input type="checkbox" name="visible" value="1" {{ old('visible', $vinilo->visible ?? true) ? 'checked' : '' }}> Visible en la tienda
+                    </label>
                 </div>
-                
-                <div class="contenedor-flex justify-between">
-                    <a href="{{ route('vinilos.show', $vinilo->id) }}" class="btn btn-outline-secundario">
-                        <i class="fas fa-times"></i> Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primario">
-                        <i class="fas fa-save"></i> Guardar Cambios
-                    </button>
+
+                <div class="fila" style="justify-content: space-between; margin-top: 2rem;">
+                    <a href="{{ route('vinilos.index') }}" class="btn btn-outline-secundario">Cancelar</a>
+                    <button type="submit" class="btn btn-primario">Guardar Cambios</button>
                 </div>
             </form>
         </div>
@@ -584,199 +526,48 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/6.4.0/wavesurfer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1/resumable.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Previsualización de la imagen subida
-    const imagenInput = document.getElementById('imagen');
-    if (imagenInput) {
-        imagenInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                
-                // Verificar si es una imagen
-                if (file.type.startsWith('image/')) {
-                    // Mostrar previsualización
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const imgPreview = document.createElement('img');
-                        imgPreview.src = e.target.result;
-                        imgPreview.className = 'img-miniatura mt-2';
-                        imgPreview.style.maxHeight = '100px';
-                        
-                        const container = imagenInput.parentElement;
-                        const existingPreview = container.querySelector('.img-preview-wrapper');
-                        
-                        if (existingPreview) {
-                            existingPreview.querySelector('img').src = e.target.result;
-                        } else {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'mt-2 img-preview-wrapper';
-                            const text = document.createElement('p');
-                            text.className = 'mb-1';
-                            text.textContent = 'Nueva imagen:';
-                            
-                            wrapper.appendChild(text);
-                            wrapper.appendChild(imgPreview);
-                            container.appendChild(wrapper);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    // No es una imagen
-                    this.value = '';
-                    alert('Por favor, selecciona un archivo de imagen válido (JPEG, PNG, JPG, GIF).');
-                }
-            }
-        });
-    }
-    
-    // Previsualización del audio nuevo
-    const audioInput = document.getElementById('preview_audio');
-    const previewContainer = document.getElementById('audio-preview-container');
-    const audioPreview = document.getElementById('audio-preview');
-    
-    if (audioInput && previewContainer && audioPreview) {
-        audioInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                
-                // Verificar si es un archivo de audio
-                if (file.type.startsWith('audio/')) {
-                    // Crear URL para el archivo seleccionado
-                    const objectURL = URL.createObjectURL(file);
-                    
-                    // Actualizar el elemento de audio y mostrar
-                    audioPreview.src = objectURL;
-                    previewContainer.classList.remove('d-none');
-                    
-                    // Añadir mensaje si el archivo es grande
-                    const existingWarning = previewContainer.querySelector('.alerta-alerta');
-                    if (file.size > 5 * 1024 * 1024) {
-                        if (!existingWarning) {
-                            const sizeWarning = document.createElement('div');
-                            sizeWarning.className = 'alerta alerta-alerta mt-2';
-                            sizeWarning.textContent = 'El archivo es grande, lo que puede afectar el rendimiento. Considera usar un archivo más pequeño.';
-                            previewContainer.appendChild(sizeWarning);
-                        }
-                    } else if (existingWarning) {
-                        existingWarning.remove();
-                    }
-                } else {
-                    // No es un archivo de audio
-                    previewContainer.classList.add('d-none');
-                    this.value = '';
-                    alert('Por favor, selecciona un archivo de audio válido (MP3 o WAV).');
-                }
-            } else {
-                // No hay archivo seleccionado
-                previewContainer.classList.add('d-none');
-            }
-        });
-    }
-    
-    // Inicializar WaveSurfer para el audio actual
-    const waveformElement = document.getElementById('waveform-edit');
-    if (waveformElement) {
-        const audioUrl = waveformElement.getAttribute('data-audio-url');
-        
-        var wavesurferEdit = WaveSurfer.create({
-            container: '#waveform-edit',
-            waveColor: '#4F7CAC',
-            progressColor: '#007BFF',
-            cursorColor: '#ff6b6b',
-            barWidth: 2,
-            barRadius: 3,
-            cursorWidth: 1,
-            height: 80,
-            barGap: 2,
-            responsive: true
-        });
-        
-        wavesurferEdit.load(audioUrl);
-        
-        const playBtn = document.getElementById('playBtn-edit');
-        const stopBtn = document.getElementById('stopBtn-edit');
-        const muteBtn = document.getElementById('muteBtn-edit');
-        const volumeInput = document.getElementById('volume-edit');
-        const currentTimeEl = document.getElementById('currentTime-edit');
-        const durationEl = document.getElementById('duration-edit');
-        
-        // Funciones para formatear el tiempo
-        function formatTime(seconds) {
-            seconds = Math.floor(seconds);
-            const minutes = Math.floor(seconds / 60);
-            seconds = seconds % 60;
-            return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+document.addEventListener('DOMContentLoaded', function () {
+    const resumable = new Resumable({
+        target: '{{ route("audio.upload") }}',
+        query: {_token: '{{ csrf_token() }}'},
+        fileType: ['mp3', 'wav'],
+        chunkSize: 1 * 1024 * 1024,
+        headers: {'Accept': 'application/json'},
+        testChunks: false,
+        throttleProgressCallbacks: 1
+    });
+
+    resumable.assignBrowse(document.getElementById('resumable-drop'));
+
+    resumable.on('fileAdded', function (file) {
+        resumable.upload();
+        document.getElementById('upload-progress').classList.remove('d-none');
+        document.getElementById('upload-bar').style.width = '0%';
+    });
+
+    resumable.on('fileProgress', function (file) {
+        const progress = Math.floor(file.progress() * 100);
+        document.getElementById('upload-bar').style.width = progress + '%';
+    });
+
+    resumable.on('fileSuccess', function (file, response) {
+        document.getElementById('upload-progress').classList.add('d-none');
+        const res = JSON.parse(response);
+        if (res.success && res.url) {
+            document.getElementById('audio-preview').src = res.url;
+            document.getElementById('audio-preview-container').classList.remove('d-none');
+            document.getElementById('preview_audio_path').value = res.path;
+        } else {
+            alert('Error subiendo archivo');
         }
-        
-        // Actualizar tiempo actual
-        wavesurferEdit.on('audioprocess', function() {
-            currentTimeEl.textContent = formatTime(wavesurferEdit.getCurrentTime());
-        });
-        
-        // Actualizar duración cuando se carga el audio
-        wavesurferEdit.on('ready', function() {
-            durationEl.textContent = formatTime(wavesurferEdit.getDuration());
-            volumeInput.value = wavesurferEdit.getVolume();
-        });
-        
-        // Control de reproducción
-        playBtn.addEventListener('click', function() {
-            wavesurferEdit.playPause();
-            
-            if (wavesurferEdit.isPlaying()) {
-                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            } else {
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        });
-        
-        // Cuando termina la reproducción, cambiar el ícono a play
-        wavesurferEdit.on('finish', function() {
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        });
-        
-        // Detener reproducción
-        stopBtn.addEventListener('click', function() {
-            wavesurferEdit.stop();
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        });
-        
-        // Control de volumen
-        volumeInput.addEventListener('input', function() {
-            wavesurferEdit.setVolume(volumeInput.value);
-            
-            // Actualizar icono de volumen
-            if (parseFloat(volumeInput.value) === 0) {
-                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            } else if (parseFloat(volumeInput.value) < 0.5) {
-                muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
-            } else {
-                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-            }
-        });
-        
-        // Mute/Unmute
-        let previousVolume = wavesurferEdit.getVolume();
-        muteBtn.addEventListener('click', function() {
-            if (wavesurferEdit.getVolume() > 0) {
-                previousVolume = wavesurferEdit.getVolume();
-                wavesurferEdit.setVolume(0);
-                volumeInput.value = 0;
-                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            } else {
-                wavesurferEdit.setVolume(previousVolume);
-                volumeInput.value = previousVolume;
-                
-                if (previousVolume < 0.5) {
-                    muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
-                } else {
-                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }
-            }
-        });
-    }
+    });
+
+    resumable.on('fileError', function (file, message) {
+        document.getElementById('upload-progress').classList.add('d-none');
+        alert('Error subiendo archivo: ' + message);
+    });
 });
 </script>
 @endpush

@@ -116,10 +116,10 @@ public function store(Request $request)
             $validated['imagen'] = $this->guardarArchivo($request, 'imagen', 'vinilos');
         }
         
-        if ($request->hasFile('preview_audio')) {
-            $this->eliminarArchivo($vinilo->preview_audio);
-            $validated['preview_audio'] = $this->guardarArchivo($request, 'preview_audio', 'previews');
+        if ($request->has('preview_audio_path') && !empty($request->preview_audio_path)) {
+        $validated['preview_audio'] = $request->preview_audio_path;
         }
+
         
         $vinilo->update($validated);
 
