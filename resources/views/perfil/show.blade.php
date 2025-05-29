@@ -130,10 +130,9 @@
 
                     <div class="row mb-4">
                         <div class="col-md-4 text-center">
-                            <img src="{{ asset($usuario->profile_image) }}" 
-                                 alt="Foto de perfil" 
-                                 class="img-fluid rounded-circle mb-3" 
-                                 style="width: 150px; height: 150px; object-fit: cover;">
+                            <img src="{{ Storage::url($usuario->profile_image) }}" 
+             alt="Test Storage" 
+             style="max-width: 100px; border: 1px solid blue;">
                             <p class="text-muted">Miembro desde: {{ $usuario->created_at->format('d/m/Y') }}</p>
                         </div>
                         <div class="col-md-8">

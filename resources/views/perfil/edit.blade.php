@@ -132,11 +132,9 @@
 
                         <div class="row mb-4">
                             <div class="col-md-4 text-center">
-                                <img src="{{ asset($usuario->profile_image) }}" 
-                                     alt="Foto de perfil" 
-                                     id="profileImagePreview"
-                                     class="img-fluid rounded-circle mb-3" 
-                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{{ Storage::url($usuario->profile_image) }}" 
+             alt="Test Storage" 
+             style="max-width: 100px; border: 1px solid blue;">
                                 <div class="mb-3">
                                     <label for="profile_image" class="form-label">Cambiar imagen</label>
                                     <input class="form-control" type="file" id="profile_image" name="profile_image" accept="image/*">

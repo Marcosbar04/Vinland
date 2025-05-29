@@ -11,83 +11,43 @@
     margin-bottom: 24px;
 }
 
-.btn {
-    display: inline-block;
-    font-weight: 400;
-    line-height: 1.5;
-    text-align: center;
-    text-decoration: none;
+/* Añadir al final de tu CSS existente */
+
+.btn-group {
+    display: inline-flex;
     vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
     border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    overflow: hidden;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #0d6efd;
-    border: 1px solid #0d6efd;
+.btn-group .btn {
+    border-radius: 0;
+    border-right: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+.btn-group .btn:first-child {
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
 }
 
-.btn-info {
-    color: #fff;
-    background-color: #0dcaf0;
-    border: 1px solid #0dcaf0;
+.btn-group .btn:last-child {
+    border-top-right-radius: 0.2rem;
+    border-bottom-right-radius: 0.2rem;
+    border-right: 1px solid;
 }
 
-.btn-info:hover {
-    background-color: #31d2f2;
-    border-color: #25cff2;
+.btn-group .btn:not(:first-child):not(:last-child) {
+    border-radius: 0;
 }
 
-.btn-warning {
-    color: #000;
-    background-color: #ffc107;
-    border: 1px solid #ffc107;
-}
-
-.btn-warning:hover {
-    background-color: #ffca2c;
-    border-color: #ffc720;
-}
-
-.btn-success {
-    color: #fff;
-    background-color: #198754;
-    border: 1px solid #198754;
-}
-
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
-}
-
-.btn-danger {
-    color: #fff;
-    background-color: #dc3545;
-    border: 1px solid #dc3545;
-}
-
-.btn-danger:hover {
-    background-color: #bb2d3b;
-    border-color: #b02a37;
-}
-
-.btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    border-radius: 0.2rem;
-}
-
-/* Tarjetas */
+/* Asegurar que todos los botones tengan la misma altura */
+.btn-group .btn {
+    min-height: 31px;
+}/* Tarjetas */
 .tarjeta {
     position: relative;
     display: flex;

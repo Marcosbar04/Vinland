@@ -150,33 +150,46 @@
         overflow: hidden;
     }
 
-    .btn-group .btn {
+    .btn-group .btn,
+    .btn-group form .btn {
         border-radius: 0;
         border-right: 0;
         margin: 0;
+        display: inline-block;
     }
 
-    .btn-group .btn:first-child {
+    .btn-group .btn:first-child,
+    .btn-group form:first-child .btn {
         border-top-left-radius: 0.375rem;
         border-bottom-left-radius: 0.375rem;
     }
 
-    .btn-group .btn:last-child {
+    .btn-group .btn:last-child,
+    .btn-group form:last-child .btn {
         border-top-right-radius: 0.375rem;
         border-bottom-right-radius: 0.375rem;
         border-right: 1px solid;
     }
 
-    .btn-group .btn:not(:first-child):not(:last-child) {
+    .btn-group .btn:not(:first-child):not(:last-child),
+    .btn-group form:not(:first-child):not(:last-child) .btn {
         border-radius: 0;
     }
 
     .btn-group form {
-        display: inline;
+        display: inline-flex;
         margin: 0;
+        align-items: stretch;
     }
 
-    .pagination-info {
+    /* Asegurar que todos los botones tengan la misma altura */
+    .btn-group .btn,
+    .btn-group form .btn {
+        min-height: 31px; /* Altura mínima para btn-sm */
+        align-items: center;
+        display: inline-flex;
+        justify-content: center;
+    }    .pagination-info {
         display: flex;
         justify-content: space-between;
         align-items: center;

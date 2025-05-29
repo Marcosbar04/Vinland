@@ -25,46 +25,47 @@ class UsuarioController extends Controller
         return view('perfil.edit', compact('usuario'));
     }
 
-    public function update(Request $request)
-    {
-        $usuario = $request->user();
+   public function update(Request $request)
+{
+    $usuario = $request->user();
+    
+    // Validar datos
+    $validated = $request->validate([
+        'username' => ['required', 'string', 'max:255', Rule::unique('Usuarios')->ignore($usuario->id)],
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => ['required', 'email', 'max:255', Rule::unique('Usuarios')->ignore($usuario->id)],
+        'profile_image' => 'nullable|image|max:2048',
+    ]);
 
-        $request->validate([
-            'username' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('Usuarios')->ignore($usuario->id),
-            ],
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('Usuarios')->ignore($usuario->id),
-            ],
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($request->hasFile('profile_image')) {
-            if ($usuario->profile_image && $usuario->profile_image !== 'img/default-profile.png') {
-                Storage::delete('public/' . str_replace('storage/', '', $usuario->profile_image));
-            }
-
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $usuario->profile_image = $imagePath;
-        }
-
-        $usuario->username = $request->username;
-        $usuario->nombre = $request->first_name;
-        $usuario->apellido = $request->last_name;
-        $usuario->email = $request->email;
-        $usuario->save();
-
-        return redirect()->route('perfil.show')->with('success', 'Perfil actualizado correctamente.');
+    // Manejar imagen de perfil
+    if ($request->hasFile('profile_image')) {
+        $this->updateProfileImage($usuario, $request->file('profile_image'));
     }
+
+    // Actualizar datos del usuario
+    $usuario->update([
+        'username' => $validated['username'],
+        'nombre' => $validated['first_name'],
+        'apellido' => $validated['last_name'],
+        'email' => $validated['email'],
+    ]);
+
+    return redirect()->route('perfil.show')->with('success', 'Perfil actualizado correctamente.');
+}
+
+private function updateProfileImage($usuario, $image)
+{
+    // Eliminar imagen anterior si existe y no es la por defecto
+    if ($usuario->profile_image && $usuario->profile_image !== 'img/default-profile.png') {
+        Storage::delete('public/' . str_replace('storage/', '', $usuario->profile_image));
+    }
+    
+    // Guardar nueva imagen
+    $imagePath = $image->store('profile_images', 'public');
+    $usuario->profile_image = $imagePath;
+    $usuario->save();
+}
 
   
     public function cambiarContrasena(Request $request)

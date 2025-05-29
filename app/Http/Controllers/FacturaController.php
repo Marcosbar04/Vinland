@@ -22,13 +22,14 @@ class FacturaController extends Controller
         $usuario = Auth::user();
         
         // Verificar que el usuario tiene acceso a este pedido
-        if ($pedido->id_usuario != $usuario->id) {
+        // CAMBIO: Permitir acceso si es admin O si es el dueño del pedido
+        if ($pedido->id_usuario != $usuario->id && $usuario->rol !== 'admin') {
             return redirect()->route('pedidos.index')->with('error', 'No tienes permiso para acceder a esta factura');
         }
         
-        // Actualizar el estado del pedido a pagado
-        if ($pedido->estado == 'pendiente') {
-            $pedido->estado = 'pagado'; // Cambiado a 'pagado' en lugar de 'completado'
+        // Actualizar el estado del pedido a pagado solo si viene del usuario (no admin)
+        if ($pedido->estado == 'pendiente' && $usuario->rol !== 'admin') {
+            $pedido->estado = 'pagado';
             $pedido->save();
         }
         
@@ -40,7 +41,7 @@ class FacturaController extends Controller
         
         $data = [
             'pedido' => $pedido,
-            'usuario' => $usuario,
+            'usuario' => $pedido->usuario, // Usar el usuario del pedido, no el logueado
             'items' => $pedido->items,
             'fecha' => $pedido->fecha_creacion ? Carbon::parse($pedido->fecha_creacion)->format('d/m/Y H:i') : Carbon::now()->format('d/m/Y H:i'),
             'numero_factura' => 'F-'.str_pad($pedido->id, 6, '0', STR_PAD_LEFT),

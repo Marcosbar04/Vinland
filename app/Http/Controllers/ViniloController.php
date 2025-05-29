@@ -83,24 +83,49 @@ public function store(Request $request)
     
     return view('vinilos.edit', compact('vinilo', 'usuario'));
     }
-    public function mostrarViniloAleatorio(Request $request)
-    {
+
+public function mostrarViniloAleatorio(Request $request)
+{
+    // Obtener el ID del último vinilo mostrado
+    $ultimoViniloId = $request->session()->get('ultimo_vinilo_id');
+    
+    // Contar total de vinilos
+    $totalVinilos = Vinilo::count();
+    
+    if ($totalVinilos <= 1) {
+        // Si solo hay un vinilo, no hay opción
         $vinilo = Vinilo::inRandomOrder()->first();
-        
-        $userLike = null;
-        
-        if ($request->user()) {
-            $userLike = $vinilo->likes()
-                             ->where('id_usuario', $request->user()->id)
-                             ->first();
+    } else {
+        // Si hay más de un vinilo, excluir solo el último mostrado
+        if ($ultimoViniloId) {
+            $vinilo = Vinilo::where('id', '!=', $ultimoViniloId)
+                           ->inRandomOrder()
+                           ->first();
+        } else {
+            // Primera vez, mostrar cualquiera
+            $vinilo = Vinilo::inRandomOrder()->first();
         }
-        
-        return view('vinilos.aleatorio', [
-            'vinilo' => $vinilo,
-            'userLike' => $userLike,
-            'esAdmin' => $request->user() && $request->user()->rol === 'admin'
-        ]);
     }
+    
+    // Guardar el vinilo actual como "último mostrado" para la próxima vez
+    if ($vinilo) {
+        $request->session()->put('ultimo_vinilo_id', $vinilo->id);
+    }
+    
+    $userLike = null;
+    
+    if ($request->user() && $vinilo) {
+        $userLike = $vinilo->likes()
+                         ->where('id_usuario', $request->user()->id)
+                         ->first();
+    }
+    
+    return view('vinilos.aleatorio', [
+        'vinilo' => $vinilo,
+        'userLike' => $userLike,
+        'esAdmin' => $request->user() && $request->user()->rol === 'admin'
+    ]);
+}
     
     public function update(Request $request, Vinilo $vinilo)
     {
